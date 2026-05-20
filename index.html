@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popular Sports Around the World — Домашняя работа</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2eb;
+    --card: #fffef9;
+    --ink: #1a1710;
+    --ink2: #5a5648;
+    --ink3: #9a9385;
+    --accent: #2d6a4f;
+    --accent2: #52b788;
+    --accent-light: #d8f3dc;
+    --danger: #c1440e;
+    --danger-light: #fdebd5;
+    --warning: #b5820a;
+    --border: #e0dbd0;
+    --border2: #ccc7bb;
+    --radius: 12px;
+    --radius-sm: 7px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: #f5f2eb;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.18;
+    top: -100px; right: -80px;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: var(--accent2);
+    opacity: 0.12;
+    bottom: -60px; left: 10%;
+  }
+  .header-inner { max-width: 760px; margin: 0 auto; position: relative; }
+  .badge-level {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    color: var(--accent2);
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.2;
+    color: #f5f2eb;
+    margin-bottom: 6px;
+  }
+  header p { font-size: 14px; color: rgba(245,242,235,0.6); margin-bottom: 1.5rem; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .nav-tab {
+    font-size: 12px; font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: rgba(245,242,235,0.7);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .nav-tab:hover { background: rgba(255,255,255,0.15); color: #f5f2eb; }
+  .nav-tab.active { background: var(--accent2); color: var(--ink); border-color: var(--accent2); }
+
+  /* MAIN */
+  main { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* SECTION */
+  .section { display: none; animation: fadeIn .3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-header { margin-bottom: 1.5rem; }
+  .task-number {
+    display: inline-block;
+    font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent); background: var(--accent-light);
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
+  }
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem; font-weight: 600;
+    color: var(--ink); margin-bottom: 4px;
+  }
+  .section-header p { font-size: 13.5px; color: var(--ink2); }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  /* MCQ */
+  .q-num { font-size: 12px; color: var(--ink3); margin-bottom: 4px; }
+  .q-text { font-size: 14.5px; font-weight: 500; margin-bottom: 10px; color: var(--ink); line-height: 1.5; }
+  .opts { display: flex; flex-direction: column; gap: 6px; }
+  .opt-label {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13.5px; color: var(--ink);
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+    line-height: 1.4;
+  }
+  .opt-label:hover { background: #f0ede5; border-color: var(--border2); }
+  .opt-label input[type=radio] { margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
+  .opt-label.correct { background: var(--accent-light); border-color: var(--accent2); color: var(--accent); }
+  .opt-label.wrong { background: var(--danger-light); border-color: #f4a472; color: var(--danger); }
+
+  /* TRUE/FALSE */
+  .tf-item {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+  }
+  .tf-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .tf-text { font-size: 13.5px; color: var(--ink); line-height: 1.5; flex: 1; }
+  .tf-btns { display: flex; gap: 6px; flex-shrink: 0; }
+  .tf-btn {
+    font-size: 12px; font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent; color: var(--ink2);
+    cursor: pointer; transition: all .15s;
+  }
+  .tf-btn:hover { background: #f0ede5; }
+  .tf-btn.sel-true { background: var(--accent-light); border-color: var(--accent2); color: var(--accent); }
+  .tf-btn.sel-false { background: var(--danger-light); border-color: #f4a472; color: var(--danger); }
+  .tf-btn.reveal-correct { background: var(--accent-light); border-color: var(--accent2); color: var(--accent); }
+
+  /* VOCAB */
+  .vocab-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+  }
+  .vocab-row:last-child { border-bottom: none; }
+  .vocab-word { font-size: 14px; font-weight: 500; min-width: 130px; color: var(--ink); font-family: 'Fraunces', serif; }
+  .vocab-sel {
+    flex: 1; font-size: 13px; font-family: 'DM Sans', sans-serif;
+    padding: 7px 10px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: var(--card); color: var(--ink);
+    cursor: pointer;
+    transition: border-color .15s;
+  }
+  .vocab-sel:focus { outline: none; border-color: var(--accent2); }
+  .vocab-sel.ok { border-color: var(--accent2); background: var(--accent-light); color: var(--accent); }
+  .vocab-sel.err { border-color: #f4a472; background: var(--danger-light); color: var(--danger); }
+
+  /* ORAL / VOICE */
+  .oral-question {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .oral-q-text { font-size: 14.5px; font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
+  .voice-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .rec-btn {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border2);
+    background: var(--card); color: var(--ink);
+    cursor: pointer; transition: all .2s;
+  }
+  .rec-btn:hover { border-color: var(--accent2); background: var(--accent-light); color: var(--accent); }
+  .rec-btn.recording { background: var(--danger-light); border-color: #f4a472; color: var(--danger); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .7; } }
+  .rec-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .play-btn {
+    font-size: 13px; font-weight: 500;
+    padding: 8px 18px; border-radius: 20px;
+    border: 1.5px solid var(--accent);
+    background: var(--accent); color: #f5f2eb;
+    cursor: pointer; transition: opacity .15s;
+    display: none;
+  }
+  .play-btn:hover { opacity: .85; }
+  .del-btn {
+    font-size: 12px; padding: 8px 14px; border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent; color: var(--ink3);
+    cursor: pointer; transition: all .15s;
+    display: none;
+  }
+  .del-btn:hover { color: var(--danger); border-color: var(--danger); }
+  .rec-status { font-size: 12px; color: var(--ink3); }
+  .rec-timer { font-size: 12px; font-weight: 500; color: var(--danger); display: none; }
+
+  /* GRAMMAR textarea */
+  .grammar-block { margin-bottom: 1rem; }
+  .grammar-label { font-size: 13px; font-weight: 500; color: var(--ink2); margin-bottom: 6px; }
+  textarea {
+    width: 100%; font-size: 13.5px; font-family: 'DM Sans', sans-serif;
+    border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    padding: 10px 12px; color: var(--ink); background: var(--card);
+    resize: vertical; line-height: 1.6; min-height: 72px;
+    transition: border-color .15s;
+  }
+  textarea:focus { outline: none; border-color: var(--accent2); }
+  .hint-box {
+    font-size: 12.5px; color: var(--ink2);
+    background: #f5f2eb; border-left: 3px solid var(--accent2);
+    padding: 8px 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: 8px;
+  }
+
+  /* BUTTONS */
+  .btn-check {
+    font-size: 13px; font-weight: 500;
+    padding: 9px 22px; border-radius: 20px;
+    border: 1.5px solid var(--accent);
+    background: var(--accent); color: #f5f2eb;
+    cursor: pointer; margin-top: 14px;
+    transition: opacity .15s, transform .1s;
+  }
+  .btn-check:hover { opacity: .87; }
+  .btn-check:active { transform: scale(.97); }
+  .btn-secondary {
+    font-size: 13px; font-weight: 500;
+    padding: 9px 22px; border-radius: 20px;
+    border: 1.5px solid var(--border2);
+    background: transparent; color: var(--ink2);
+    cursor: pointer; margin-top: 14px; margin-left: 8px;
+    transition: all .15s;
+  }
+  .btn-secondary:hover { border-color: var(--ink2); color: var(--ink); }
+
+  /* SCORE */
+  .score-bar {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 14px; padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: #f0ede5; border: 1px solid var(--border);
+    font-size: 13.5px; font-weight: 500;
+  }
+  .score-bar.good { background: var(--accent-light); border-color: var(--accent2); color: var(--accent); }
+  .score-bar.warn { background: var(--danger-light); border-color: #f4a472; color: var(--danger); }
+
+  /* PROGRESS */
+  .progress-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .progress-track { flex: 1; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent2); border-radius: 2px; transition: width .5s ease; width: 0; }
+  .progress-label { font-size: 11px; color: rgba(245,242,235,0.5); white-space: nowrap; }
+
+  /* MIC UNSUPPORTED */
+  .mic-unsupported {
+    font-size: 13px; color: var(--warning);
+    background: #fef9e7; border: 1px solid #f5d06a;
+    border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 8px;
+    display: none;
+  }
+
+  @media (max-width: 500px) {
+    .tf-item { flex-direction: column; }
+    .vocab-word { min-width: 100px; font-size: 13px; }
+    .rec-btn, .play-btn, .del-btn { font-size: 12px; padding: 7px 14px; }
+  }
+
+  /* SEND RESULTS */
+  .send-block {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: var(--card);
+    border: 1.5px solid var(--accent2);
+    border-radius: var(--radius);
+    display: none;
+  }
+  .send-block.visible { display: block; }
+  .send-block h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem; font-weight: 600;
+    margin-bottom: 10px; color: var(--ink);
+  }
+  .name-input {
+    width: 100%; font-size: 14px; font-family: 'DM Sans', sans-serif;
+    padding: 9px 12px;
+    border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--ink);
+    margin-bottom: 12px;
+    transition: border-color .15s;
+  }
+  .name-input:focus { outline: none; border-color: var(--accent2); }
+  .btn-send {
+    font-size: 14px; font-weight: 600;
+    padding: 11px 28px; border-radius: 20px;
+    border: none;
+    background: #0088cc; color: #fff;
+    cursor: pointer; transition: opacity .15s, transform .1s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-send:hover { opacity: .88; }
+  .btn-send:active { transform: scale(.97); }
+  .btn-send:disabled { opacity: .5; cursor: not-allowed; }
+  .send-status {
+    margin-top: 12px; font-size: 13px;
+    padding: 9px 14px; border-radius: var(--radius-sm);
+    display: none;
+  }
+  .send-status.ok { display: block; background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent2); }
+  .send-status.err { display: block; background: var(--danger-light); color: var(--danger); border: 1px solid #f4a472; }
+  .send-status.loading { display: block; background: #f0ede5; color: var(--ink2); border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="badge-level">B1 Reading · ~350 words</div>
+    <h1>Popular Sports Around the World</h1>
+    <p>Домашняя работа · 4 задания</p>
+    <div style="margin-bottom:1.25rem;">
+      <div class="progress-bar-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <span class="progress-label" id="progress-label">0 / 4 выполнено</span>
+      </div>
+    </div>
+    <nav class="nav-tabs" id="nav-tabs">
+      <button class="nav-tab active" onclick="showSection(0)">1 · Вопросы</button>
+      <button class="nav-tab" onclick="showSection(1)">2 · True/False</button>
+      <button class="nav-tab" onclick="showSection(2)">3 · Слова</button>
+      <button class="nav-tab" onclick="showSection(3)">4 · Устная речь 🎙</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- SECTION 1: MCQ -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="task-number">Задание 1</div>
+    <h2>Вопросы по тексту</h2>
+    <p>Выберите правильный вариант ответа.</p>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Вопрос 1 из 5</div>
+    <div class="q-text">How many people consider themselves football fans?</div>
+    <div class="opts" id="q1">
+      <label class="opt-label"><input type="radio" name="q1" value="a"> Around 1.5 billion people</label>
+      <label class="opt-label"><input type="radio" name="q1" value="b"> Around 4 billion people</label>
+      <label class="opt-label"><input type="radio" name="q1" value="c"> Around 2 billion people</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Вопрос 2 из 5</div>
+    <div class="q-text">When was basketball invented?</div>
+    <div class="opts" id="q2">
+      <label class="opt-label"><input type="radio" name="q2" value="a"> In 1901</label>
+      <label class="opt-label"><input type="radio" name="q2" value="b"> In 1881</label>
+      <label class="opt-label"><input type="radio" name="q2" value="c"> In 1891</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Вопрос 3 из 5</div>
+    <div class="q-text">Why is basketball popular among young people?</div>
+    <div class="opts" id="q3">
+      <label class="opt-label"><input type="radio" name="q3" value="a"> Because it is cheap — you only need a ball and a hoop</label>
+      <label class="opt-label"><input type="radio" name="q3" value="b"> Because it is played outdoors only</label>
+      <label class="opt-label"><input type="radio" name="q3" value="c"> Because NBA games are free to watch</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Вопрос 4 из 5</div>
+    <div class="q-text">What are two famous tennis tournaments mentioned in the text?</div>
+    <div class="opts" id="q4">
+      <label class="opt-label"><input type="radio" name="q4" value="a"> The Olympics and the World Cup</label>
+      <label class="opt-label"><input type="radio" name="q4" value="b"> Wimbledon and the US Open</label>
+      <label class="opt-label"><input type="radio" name="q4" value="c"> Roland Garros and the NBA Finals</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Вопрос 5 из 5</div>
+    <div class="q-text">According to the text, what does sport do for people's mental health?</div>
+    <div class="opts" id="q5">
+      <label class="opt-label"><input type="radio" name="q5" value="a"> It helps them earn money</label>
+      <label class="opt-label"><input type="radio" name="q5" value="b"> It helps reduce stress, improve sleep and build confidence</label>
+      <label class="opt-label"><input type="radio" name="q5" value="c"> It helps them travel around the world</label>
+    </div>
+  </div>
+
+  <button class="btn-check" onclick="checkMCQ()">Проверить ответы</button>
+  <div id="mcq-score"></div>
+</div>
+
+<!-- SECTION 2: TRUE/FALSE -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="task-number">Задание 2</div>
+    <h2>True / False</h2>
+    <p>Прочитайте утверждения и выберите True или False.</p>
+  </div>
+  <div class="card" id="tf-container"></div>
+  <button class="btn-check" onclick="checkTF()">Проверить ответы</button>
+  <div id="tf-score"></div>
+</div>
+
+<!-- SECTION 3: VOCAB -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="task-number">Задание 4</div>
+    <h2>Ключевые слова</h2>
+    <p>Соотнесите слово с правильным переводом.</p>
+  </div>
+  <div class="card" id="vocab-container"></div>
+  <button class="btn-check" onclick="checkVocab()">Проверить ответы</button>
+  <button class="btn-secondary" onclick="resetVocab()">Сбросить</button>
+  <div id="vocab-score"></div>
+</div>
+
+<!-- SECTION 4: ORAL + GRAMMAR -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="task-number">Задание 5</div>
+    <h2>Устная речь и грамматика 🎙</h2>
+    <p>Ответьте на вопросы вслух, запишите голос. Затем заполните письменное задание.</p>
+  </div>
+
+  <!-- Q1 oral -->
+  <div class="oral-question">
+    <div class="q-num">Устный вопрос 1 из 3</div>
+    <div class="oral-q-text">Describe your favourite sport. What are the rules? Why do you like it?</div>
+    <div class="voice-controls">
+      <button class="rec-btn" id="rec-0" onclick="toggleRec(0)"><span class="rec-dot"></span> Записать</button>
+      <button class="play-btn" id="play-0" onclick="playRec(0)">▶ Воспроизвести</button>
+      <button class="del-btn" id="del-0" onclick="deleteRec(0)">✕ Удалить</button>
+      <span class="rec-timer" id="timer-0">0:00</span>
+      <span class="rec-status" id="status-0">Нажмите, чтобы записать ответ</span>
+    </div>
+    <div class="mic-unsupported" id="unsup-0">Микрофон недоступен — проверьте разрешения браузера.</div>
+  </div>
+
+  <!-- Q2 oral -->
+  <div class="oral-question">
+    <div class="q-num">Устный вопрос 2 из 3</div>
+    <div class="oral-q-text">Is sport important in everyday life? Give at least two reasons.</div>
+    <div class="voice-controls">
+      <button class="rec-btn" id="rec-1" onclick="toggleRec(1)"><span class="rec-dot"></span> Записать</button>
+      <button class="play-btn" id="play-1" onclick="playRec(1)">▶ Воспроизвести</button>
+      <button class="del-btn" id="del-1" onclick="deleteRec(1)">✕ Удалить</button>
+      <span class="rec-timer" id="timer-1">0:00</span>
+      <span class="rec-status" id="status-1">Нажмите, чтобы записать ответ</span>
+    </div>
+    <div class="mic-unsupported" id="unsup-1"></div>
+  </div>
+
+  <!-- Q3 oral -->
+  <div class="oral-question">
+    <div class="q-num">Устный вопрос 3 из 3</div>
+    <div class="oral-q-text">Compare football and basketball from the text. Which sport would you prefer to watch and why?</div>
+    <div class="voice-controls">
+      <button class="rec-btn" id="rec-2" onclick="toggleRec(2)"><span class="rec-dot"></span> Записать</button>
+      <button class="play-btn" id="play-2" onclick="playRec(2)">▶ Воспроизвести</button>
+      <button class="del-btn" id="del-2" onclick="deleteRec(2)">✕ Удалить</button>
+      <span class="rec-timer" id="timer-2">0:00</span>
+      <span class="rec-status" id="status-2">Нажмите, чтобы записать ответ</span>
+    </div>
+    <div class="mic-unsupported" id="unsup-2"></div>
+  </div>
+
+  <!-- SEND RESULTS BLOCK -->
+  <div class="send-block" id="send-block">
+    <h3>📤 Отправить результаты учителю</h3>
+    <p style="font-size:13px;color:var(--ink2);margin-bottom:12px;">Все три ответа записаны. Введите своё имя и отправьте результаты.</p>
+    <input class="name-input" id="student-name" type="text" placeholder="Ваше имя и фамилия" maxlength="80">
+    <button class="btn-send" id="btn-send" onclick="sendResults()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Отправить в Telegram
+    </button>
+    <div class="send-status" id="send-status"></div>
+  </div>
+
+</div>
+
+</main>
+
+<script>
+// ---- NAV ----
+const completed = [false,false,false];
+function showSection(i) {
+  document.querySelectorAll('.section').forEach((s,j) => s.classList.toggle('active', j===i));
+  document.querySelectorAll('.nav-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+}
+function markDone(i) {
+  if (!completed[i]) { completed[i]=true; updateProgress(); }
+}
+function updateProgress() {
+  const n = completed.filter(Boolean).length;
+  document.getElementById('progress-fill').style.width = (n/3*100)+'%';
+  document.getElementById('progress-label').textContent = n+' / 3 выполнено';
+}
+
+// ---- MCQ ----
+const mcqAns = {q1:'b',q2:'c',q3:'a',q4:'b',q5:'b'};
+function checkMCQ() {
+  let correct=0;
+  for (let q in mcqAns) {
+    const labels = document.querySelectorAll('#'+q+' .opt-label');
+    const sel = document.querySelector('input[name="'+q+'"]:checked');
+    labels.forEach(l => l.classList.remove('correct','wrong'));
+    if (sel) {
+      if (sel.value===mcqAns[q]) { sel.parentElement.classList.add('correct'); correct++; }
+      else {
+        sel.parentElement.classList.add('wrong');
+        labels.forEach(l => { if (l.querySelector('input').value===mcqAns[q]) l.classList.add('correct'); });
+      }
+    }
+  }
+  const el = document.getElementById('mcq-score');
+  el.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'score-bar ' + (correct>=4?'good':'warn');
+  div.textContent = '✓ Результат: '+correct+' из 5'+(correct===5?' — отлично!':correct>=3?' — хорошо!':' — попробуй ещё раз');
+  el.appendChild(div);
+  if (correct>=3) markDone(0);
+}
+
+// ---- TRUE/FALSE ----
+const tfData = [
+  {text:'Football is called soccer everywhere in the world.', ans:false},
+  {text:'The 2022 FIFA World Cup final was watched by over 1.5 billion people.', ans:true},
+  {text:'Basketball requires expensive equipment to play.', ans:false},
+  {text:'Running has become more popular in recent years.', ans:true},
+  {text:'Sport can help people from different backgrounds share a common passion.', ans:true},
+  {text:'Individual sports do not allow people to improve at their own pace.', ans:false},
+];
+const tfSelections = {};
+const cont = document.getElementById('tf-container');
+tfData.forEach((item,i) => {
+  const row = document.createElement('div');
+  row.className='tf-item';
+  row.innerHTML=`<span class="tf-text">${i+1}. ${item.text}</span><div class="tf-btns"><button class="tf-btn" id="tf-t-${i}" onclick="selTF(${i},true)">True</button><button class="tf-btn" id="tf-f-${i}" onclick="selTF(${i},false)">False</button></div>`;
+  cont.appendChild(row);
+});
+function selTF(i,val) {
+  tfSelections[i]=val;
+  document.getElementById('tf-t-'+i).className='tf-btn'+(val===true?' sel-true':'');
+  document.getElementById('tf-f-'+i).className='tf-btn'+(val===false?' sel-false':'');
+}
+function checkTF() {
+  let correct=0, answered=0;
+  tfData.forEach((item,i) => {
+    const tBtn=document.getElementById('tf-t-'+i);
+    const fBtn=document.getElementById('tf-f-'+i);
+    tBtn.className='tf-btn'; fBtn.className='tf-btn';
+    if (item.ans===true) tBtn.classList.add('reveal-correct'); else fBtn.classList.add('reveal-correct');
+    if (tfSelections[i]!==undefined) {
+      answered++;
+      if (tfSelections[i]===item.ans) correct++;
+    }
+  });
+  const el=document.getElementById('tf-score');
+  el.innerHTML='';
+  const div=document.createElement('div');
+  div.className='score-bar '+(correct>=5?'good':'warn');
+  div.textContent='✓ Результат: '+correct+' из '+tfData.length+(correct===6?' — отлично!':correct>=4?' — хорошо!':' — попробуй ещё раз');
+  el.appendChild(div);
+  if (correct>=4) markDone(1);
+}
+
+// ---- VOCAB ----
+const vocabData = [
+  {word:'tournament', ans:'турнир', opts:['участник','турнир','снаряжение','страсть, увлечение']},
+  {word:'opponent', ans:'соперник', opts:['соперник','аудитория, зрители','уверенность','координация']},
+  {word:'equipment', ans:'снаряжение', opts:['турнир','страсть, увлечение','снаряжение','участник']},
+  {word:'confidence', ans:'уверенность', opts:['координация','уверенность','соперник','аудитория, зрители']},
+  {word:'audience', ans:'аудитория, зрители', opts:['страсть, увлечение','снаряжение','аудитория, зрители','уверенность']},
+  {word:'coordination', ans:'координация', opts:['координация','турнир','участник','соперник']},
+  {word:'participant', ans:'участник', opts:['уверенность','аудитория, зрители','снаряжение','участник']},
+  {word:'passion', ans:'страсть, увлечение', opts:['турнир','страсть, увлечение','координация','соперник']},
+];
+const vc = document.getElementById('vocab-container');
+vocabData.forEach((item,i) => {
+  const row=document.createElement('div'); row.className='vocab-row';
+  const shuffled=[...item.opts].sort(()=>Math.random()-.5);
+  row.innerHTML=`<span class="vocab-word">${item.word}</span><select class="vocab-sel" id="vs-${i}"><option value="">— выберите —</option>${shuffled.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`;
+  vc.appendChild(row);
+});
+function checkVocab() {
+  let correct=0;
+  vocabData.forEach((item,i) => {
+    const sel=document.getElementById('vs-'+i);
+    sel.className='vocab-sel';
+    if (sel.value===item.ans) { sel.classList.add('ok'); correct++; }
+    else if (sel.value) { sel.classList.add('err'); }
+  });
+  const el=document.getElementById('vocab-score');
+  el.innerHTML='';
+  const div=document.createElement('div');
+  div.className='score-bar '+(correct>=6?'good':'warn');
+  div.textContent='✓ Результат: '+correct+' из '+vocabData.length+(correct===8?' — отлично!':correct>=5?' — хорошо!':' — попробуй ещё раз');
+  el.appendChild(div);
+  if (correct>=6) markDone(2);
+}
+function resetVocab() {
+  vocabData.forEach((_,i) => { const s=document.getElementById('vs-'+i); s.value=''; s.className='vocab-sel'; });
+  document.getElementById('vocab-score').innerHTML='';
+}
+
+// ---- VOICE RECORDING ----
+const recState = [{}, {}, {}];
+let activeRec = null;
+let timerInterval = null;
+
+async function toggleRec(i) {
+  if (recState[i].isRecording) { stopRec(i); return; }
+  if (activeRec !== null && activeRec !== i) { stopRec(activeRec); }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const mr = new MediaRecorder(stream);
+    const chunks = [];
+    mr.ondataavailable = e => { if(e.data.size>0) chunks.push(e.data); };
+    mr.onstop = () => {
+      const blob = new Blob(chunks, {type:'audio/webm'});
+      recState[i].blob = blob;
+      recState[i].url = URL.createObjectURL(blob);
+      stream.getTracks().forEach(t=>t.stop());
+      document.getElementById('play-'+i).style.display='inline-block';
+      document.getElementById('del-'+i).style.display='inline-block';
+      document.getElementById('status-'+i).textContent='Запись сохранена ✓';
+      recState[i].isRecording=false;
+      activeRec=null;
+      const btn=document.getElementById('rec-'+i);
+      btn.className='rec-btn'; btn.innerHTML='<span class="rec-dot"></span> Перезаписать';
+      markDone(2);
+      checkSendBlock();
+    };
+    mr.start();
+    recState[i].mr=mr; recState[i].isRecording=true;
+    activeRec=i;
+    const btn=document.getElementById('rec-'+i);
+    btn.className='rec-btn recording'; btn.innerHTML='<span class="rec-dot"></span> Остановить';
+    document.getElementById('status-'+i).textContent='';
+    startTimer(i);
+  } catch(e) {
+    document.getElementById('unsup-'+i).style.display='block';
+    document.getElementById('unsup-'+i).textContent='Ошибка доступа к микрофону. Проверьте разрешения браузера и попробуйте снова.';
+  }
+}
+
+function stopRec(i) {
+  if (recState[i].mr && recState[i].isRecording) {
+    recState[i].mr.stop();
+    clearInterval(timerInterval);
+    document.getElementById('timer-'+i).style.display='none';
+    document.getElementById('timer-'+i).textContent='0:00';
+  }
+}
+
+function startTimer(i) {
+  let sec=0;
+  const el=document.getElementById('timer-'+i);
+  el.style.display='inline';
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    sec++;
+    const m=Math.floor(sec/60), s=sec%60;
+    el.textContent=m+':'+(s<10?'0':'')+s;
+    if(sec>=120) { stopRec(i); }
+  },1000);
+}
+
+function playRec(i) {
+  if (!recState[i].url) return;
+  const audio=new Audio(recState[i].url);
+  audio.play();
+  document.getElementById('status-'+i).textContent='▶ Воспроизводится...';
+  audio.onended=()=>{ document.getElementById('status-'+i).textContent='Запись сохранена ✓'; };
+}
+
+function deleteRec(i) {
+  recState[i]={};
+  document.getElementById('play-'+i).style.display='none';
+  document.getElementById('del-'+i).style.display='none';
+  document.getElementById('status-'+i).textContent='Нажмите, чтобы записать ответ';
+  const btn=document.getElementById('rec-'+i);
+  btn.className='rec-btn'; btn.innerHTML='<span class="rec-dot"></span> Записать';
+  checkSendBlock();
+}
+
+// Also call checkSendBlock after each recording completes
+function checkSendBlock() {
+  const allDone = recState[0].blob && recState[1].blob && recState[2].blob;
+  document.getElementById('send-block').classList.toggle('visible', !!allDone);
+}
+
+// ---- TELEGRAM SEND ----
+const TG_TOKEN = '5163958615:AAGehgzKYfvpL21JRKlgLIeKEmhtSjry9FY';
+const TG_CHAT  = '1044842901';
+const TG_API   = 'https://api.telegram.org/bot' + TG_TOKEN;
+
+async function sendResults() {
+  const name = document.getElementById('student-name').value.trim();
+  if (!name) {
+    document.getElementById('student-name').focus();
+    showSendStatus('loading', 'Пожалуйста, введите ваше имя.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-send');
+  btn.disabled = true;
+  showSendStatus('loading', '⏳ Отправляю результаты...');
+
+  try {
+    const mcqResults = getMCQResults();
+    const tfResults  = getTFResults();
+    const vocabRes   = getVocabResults();
+
+    const text =
+`📚 <b>Домашняя работа: Popular Sports Around the World</b>
+👤 <b>Ученик:</b> ${escHtml(name)}
+🕐 <b>Время:</b> ${new Date().toLocaleString('ru-RU')}
+
+📝 <b>Задание 1 — Вопросы по тексту:</b>
+${mcqResults}
+
+✅ <b>Задание 2 — True/False:</b>
+${tfResults}
+
+📖 <b>Задание 4 — Словарь:</b>
+${vocabRes}
+
+🎙 <b>Задание 5 — Устная речь:</b> аудиозаписи прикреплены ниже`;
+
+    await tgSend('sendMessage', { chat_id: TG_CHAT, text, parse_mode: 'HTML' });
+
+    const labels = ['Вопрос 1', 'Вопрос 2', 'Вопрос 3'];
+    for (let i = 0; i < 3; i++) {
+      if (recState[i].blob) {
+        await tgSendAudio(recState[i].blob, name, labels[i]);
+      }
+    }
+
+    showSendStatus('ok', '✅ Результаты успешно отправлены учителю!');
+    btn.innerHTML = '✓ Отправлено';
+  } catch(e) {
+    showSendStatus('err', '❌ Ошибка отправки: ' + e.message + '. Проверьте интернет и попробуйте ещё раз.');
+    btn.disabled = false;
+  }
+}
+
+async function tgSend(method, params) {
+  const r = await fetch(TG_API + '/' + method, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(params)
+  });
+  const d = await r.json();
+  if (!d.ok) throw new Error(d.description || 'Telegram API error');
+  return d;
+}
+
+async function tgSendAudio(blob, name, label) {
+  const fd = new FormData();
+  fd.append('chat_id', TG_CHAT);
+  fd.append('voice', blob, 'voice.ogg');
+  fd.append('caption', '🎙 ' + name + ' — ' + label);
+  const r = await fetch(TG_API + '/sendVoice', { method:'POST', body:fd });
+  const d = await r.json();
+  if (!d.ok) throw new Error(d.description || 'Audio upload error');
+  return d;
+}
+
+function showSendStatus(type, msg) {
+  const el = document.getElementById('send-status');
+  el.className = 'send-status ' + type;
+  el.textContent = msg;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function getMCQResults() {
+  const labels = {
+    q1: 'Сколько болельщиков у футбола?',
+    q2: 'Когда изобрели баскетбол?',
+    q3: 'Почему баскетбол популярен?',
+    q4: 'Теннисные турниры?',
+    q5: 'Спорт и психическое здоровье?'
+  };
+  const lines = [];
+  for (const q in mcqAns) {
+    const sel = document.querySelector('input[name="'+q+'"]:checked');
+    const answer = sel ? sel.parentElement.textContent.trim() : '(не отвечено)';
+    const mark = sel && sel.value === mcqAns[q] ? '✓' : '✗';
+    lines.push('  ' + mark + ' ' + labels[q] + '\n     → ' + answer);
+  }
+  return lines.join('\n');
+}
+
+function getTFResults() {
+  return tfData.map((item,i) => {
+    const sel = tfSelections[i];
+    const answer = sel===undefined ? '(не отвечено)' : (sel ? 'True' : 'False');
+    const mark = sel === item.ans ? '✓' : (sel===undefined ? '—' : '✗');
+    return '  ' + mark + ' "' + item.text.substring(0,50) + '…" → ' + answer;
+  }).join('\n');
+}
+
+function getVocabResults() {
+  return vocabData.map((item,i) => {
+    const sel = document.getElementById('vs-'+i);
+    const answer = sel.value || '(не выбрано)';
+    const mark = sel.value === item.ans ? '✓' : '✗';
+    return '  ' + mark + ' ' + item.word + ' → ' + answer;
+  }).join('\n');
+}
+
+</script>
+</body>
+</html>
